@@ -1,0 +1,59 @@
+{
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
+  "name": "webpage-pet",
+  "version": "1.0.0",
+  "description": "Webpage pet widget. | 网页宠物小组件。",
+  "keywords": [
+    "widget",
+    "webpage",
+    "pet"
+  ],
+  "author": "Your Name",
+  "homepage": "https://github.com/yourusername/webpage-pet",
+  "license": "MIT",
+  "repository": "github:yourusername/webpage-pet",
+  "files": [
+    "lib"
+  ],
+  "main": "./lib/index.js",
+  "module": "./lib/index.esm.js",
+  "style": "./lib/index.css",
+  "types": "./lib/index.d.ts",
+  "unpkg": "./lib/webpage-pet.min.js",
+  "jsdelivr": "./lib/webpage-pet.min.js",
+  "scripts": {
+    "lint": "eslint",
+    "build:docs": "rollup -c ./rollup.docs.js",
+    "build:lib": "rollup -c ./rollup.config.js",
+    "build": "npm-run-all -s build:*",
+    "dev:rollup": "rollup --watch -c ./rollup.docs.js",
+    "dev:nodemon": "nodemon --watch index.html --exec \"npm run dev:rollup\"",
+    "dev:serve": "serve ./docs",
+    "dev": "npm-run-all -p dev:nodemon dev:serve"
+  },
+  "dependencies": {
+    "@juggle/resize-observer": "^3.4.0",
+    "tslib": "^2.8.1"
+  },
+  "devDependencies": {
+    "@dsrca/config": "^5.0.1",
+    "@rollup/plugin-html": "^1.1.0",
+    "@rollup/plugin-image": "^3.0.3",
+    "@rollup/plugin-node-resolve": "^16.0.1",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-typescript": "^12.1.2",
+    "eslint": "^9.27.0",
+    "nodemon": "^3.1.10",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^3.5.3",
+    "rollup": "^4.41.0",
+    "rollup-plugin-copy": "^3.5.0",
+    "rollup-plugin-scss": "^4.0.1",
+    "rollup-plugin-svgo": "^2.0.0",
+    "sass": "^1.89.0",
+    "serve": "^14.2.4",
+    "typescript": "~5.7.3"
+  }
+}

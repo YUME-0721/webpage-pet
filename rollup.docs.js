@@ -1,0 +1,147 @@
+const { nodeResolve } = require('@rollup/plugin-node-resolve');
+const typescript = require('@rollup/plugin-typescript');
+const image = require('@rollup/plugin-image');
+const scss = require('rollup-plugin-scss');
+const svgo = require('rollup-plugin-svgo');
+const html = require('@rollup/plugin-html');
+const copy = require('rollup-plugin-copy');
+
+const name = 'WebpagePet';
+const input = './src/index.ts';
+
+/** @type {import('rollup').RollupOptions} */
+const docs = {
+  input,
+  output: {
+    file: './docs/webpage-pet.js',
+    format: 'umd',
+    name,
+    sourcemap: true,
+  },
+  plugins: [
+    nodeResolve(),
+    typescript(),
+    scss({
+      fileName: 'webpage-pet.css',
+    }),
+    image({
+      exclude: './src/**/*.svg',
+    }),
+    svgo(),
+    copy({
+      targets: [
+        {
+          src: 'src/audio/*',
+          dest: 'docs/',
+        },
+      ],
+      hook: 'writeBundle',
+    }),
+    html({
+      title: 'Webpage Pet',
+      template: () => `<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Webpage Pet</title>
+    <meta
+      name="description"
+      content="Add the Webpage Pet to your own web page! | 把网页宠物添加到你自己的网页内！"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?display=swap&family=Inter:wght@400;500"
+    />
+    <link rel="stylesheet" href="webpage-pet.css" />
+    <style>
+      html,
+      body {
+        font-family:
+          Inter,
+          -apple-system,
+          BlinkMacSystemFont,
+          'Noto Sans SC',
+          'Noto Sans JP',
+          sans-serif;
+        margin: 0;
+      }
+      #webpage-pet {
+        position: fixed;
+        right: 24px;
+        bottom: 24px;
+      }
+      main {
+        text-align: center;
+        margin: 24px;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+      }
+      main div {
+        margin-top: 16px;
+        display: flex;
+      }
+      @media screen and (max-width: 768px) {
+        main div {
+          display: none;
+        }
+      }
+      main a,
+      main a:visited {
+        margin-top: 32px;
+        display: block;
+        color: inherit;
+        background-color: #eeeeee;
+        font-size: 18px;
+        width: 140px;
+        height: 40px;
+        line-height: 40px;
+        border-radius: 2px;
+        text-decoration: none;
+      }
+      main a:hover,
+      main a:active {
+        color: #ffffff;
+        background-color: #7793cc;
+        text-decoration: none;
+      }
+      h1 {
+        font-size: 1.75em;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>🐾「Webpage Pet」</h1>
+      <p>
+        Add the Webpage Pet to your own web page! Support custom images, auto
+        resizing and more runtime params!
+      </p>
+      <p>
+        把网页宠物添加到你自己的网页内！支持自定义图片、自动缩放和更多运行参数！
+      </p>
+      <div>
+        <img
+          src="./characters/zmd-endministrator.png"
+          height="160px"
+          alt="ZMD Endministrator"
+          title="ZMD Endministrator"
+        />
+      </div>
+      <a href="https://github.com/yourusername/webpage-pet" target="_blank" rel="noopener noreferrer">
+        GitHub
+      </a>
+    </main>
+    <div id="webpage-pet"></div>
+    <script src="webpage-pet.js"></script>
+    <script>
+      new WebpagePet({ sound: true, audioPath: './' }).mount('#webpage-pet');
+    </script>
+  </body>
+</html>`,
+    }),
+  ],
+};
+
+module.exports = docs;
