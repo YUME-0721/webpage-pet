@@ -129,7 +129,7 @@ const docs = {
           title="ZMD Endministrator"
         />
       </div>
-      <a href="https://github.com/yourusername/webpage-pet" target="_blank" rel="noopener noreferrer">
+      <a href="https://github.com/YUME-0721/webpage-pet" target="_blank" rel="noopener noreferrer">
         GitHub
       </a>
     </main>

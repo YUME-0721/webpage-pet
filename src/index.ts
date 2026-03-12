@@ -311,7 +311,7 @@ class WebpagePet {
     ctrl.appendChild(magic);
     const github = document.createElement('a');
     github.className = itemClass;
-    github.href = '//github.com/yourusername/webpage-pet';
+    github.href = '//github.com/YUME-0721/webpage-pet';
     github.target = '_blank';
     github.innerHTML = svgGitHub;
     github.title = 'GitHub 仓库';
