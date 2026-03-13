@@ -212,6 +212,7 @@ npm run build:lib
 # 构建示例站点
 npm run build:docs
 ```
+npx serve docs
 
 ## 许可证
 

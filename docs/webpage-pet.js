@@ -853,12 +853,12 @@
                     ctx.beginPath();
                 }
                 // use the middle of control bar as start of the line
-                ctx.moveTo(0, -40); // 控制栏高度中间位置
+                ctx.moveTo(0, -50); // 控制栏高度中间位置，增加高度
                 if (this._options.rod) {
-                    const radius = imgSize * 2 / 3; // 角色高度的三分之二
+                    const radius = imgSize * 2.5 / 3; // 增加角色高度比例
                     const { nx, ny } = this._calcCenterPoint(r, radius, x, y);
                     // 使用二次贝塞尔曲线绘制弹簧杆，更接近 sakana-main 的效果
-                    ctx.quadraticCurveTo(0, -75, nx, -ny);
+                    ctx.quadraticCurveTo(0, -100, nx, -ny); // 增加曲线高度
                     ctx.stroke();
                 }
                 ctx.restore();
