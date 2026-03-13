@@ -298,6 +298,7 @@ class WebpagePet {
       ctrl.addEventListener('touchstart', this._onCtrlTouchStart);
     }
     const itemClass = 'sakana-widget-ctrl-item';
+    // 1. 切换角色
     const person = document.createElement('div');
     person.className = itemClass;
     person.innerHTML = svgPerson;
@@ -306,6 +307,7 @@ class WebpagePet {
     person.title = '切换角色';
     this._domCtrlPerson = person;
     ctrl.appendChild(person);
+    // 2. 自动模式
     const magic = document.createElement('div');
     magic.className = itemClass;
     magic.innerHTML = svgSync;
@@ -314,13 +316,7 @@ class WebpagePet {
     magic.title = '自动模式';
     this._domCtrlMagic = magic;
     ctrl.appendChild(magic);
-    const github = document.createElement('a');
-    github.className = itemClass;
-    github.href = '//github.com/YUME-0721/webpage-pet';
-    github.target = '_blank';
-    github.innerHTML = svgGitHub;
-    github.title = 'GitHub 仓库';
-    ctrl.appendChild(github);
+    // 3. 静音
     const muted = document.createElement('div');
     muted.className = itemClass;
     muted.innerHTML = Voices.isMute ? svgMuted : svgNoMuted;
@@ -329,6 +325,15 @@ class WebpagePet {
     muted.title = Voices.isMute ? '取消静音' : '静音';
     this._domCtrlMuted = muted;
     ctrl.appendChild(muted);
+    // 4. GitHub 仓库
+    const github = document.createElement('a');
+    github.className = itemClass;
+    github.href = '//github.com/YUME-0721/webpage-pet';
+    github.target = '_blank';
+    github.innerHTML = svgGitHub;
+    github.title = 'GitHub 仓库';
+    ctrl.appendChild(github);
+    // 5. 关闭
     const close = document.createElement('div');
     close.className = itemClass;
     close.innerHTML = svgClose;
