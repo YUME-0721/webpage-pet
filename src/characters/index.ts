@@ -1,4 +1,7 @@
 import _zmdEndministrator from './zmd-endministrator.png';
+import _aigirl from './02-aigirl.png';
+import _frieren from './Frieren.png';
+import _liuying from './liuying.png';
 
 export interface WebpagePetState {
   /**
@@ -49,6 +52,48 @@ const zmdEndministrator: WebpagePetCharacter = {
   },
 };
 
+const aigirl: WebpagePetCharacter = {
+  image: _aigirl,
+  initialState: {
+    i: 0.08,
+    s: 0.1,
+    d: 0.99,
+    r: 1,
+    y: 40,
+    t: 0,
+    w: 0,
+  },
+};
+
+const frieren: WebpagePetCharacter = {
+  image: _frieren,
+  initialState: {
+    i: 0.08,
+    s: 0.1,
+    d: 0.99,
+    r: 1,
+    y: 40,
+    t: 0,
+    w: 0,
+  },
+};
+
+const liuying: WebpagePetCharacter = {
+  image: _liuying,
+  initialState: {
+    i: 0.08,
+    s: 0.1,
+    d: 0.99,
+    r: 1,
+    y: 40,
+    t: 0,
+    w: 0,
+  },
+};
+
 export default {
   zmdEndministrator,
+  aigirl,
+  frieren,
+  liuying,
 };

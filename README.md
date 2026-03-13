@@ -4,6 +4,8 @@
 
 Webpage Pet 是一个基于 Sakana Widget 实现的网页宠物小组件，可在静态博客或网站上添加一个可交互的宠物形象。
 
+示例网站：https://yume-0721.github.io/webpage-pet/，包含了所有角色的演示。
+
 本项目借鉴了 [itorr/sakana](https://github.com/itorr/sakana) 「Sakana!」石蒜模拟器的实现思路和动画效果，感谢原作者的开源贡献。
 
 ## 功能特性

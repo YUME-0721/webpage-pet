@@ -224,7 +224,14 @@ class WebpagePet {
    */
   private _updateSize = (size: number) => {
     this._options.size = size;
-    this._imageSize = this._options.size / 1.25;
+    // different image size for different characters
+    if (this._char === 'liuying') {
+      this._imageSize = this._options.size / 0.9; // liuying 角色更大
+    } else if (this._char === 'frieren') {
+      this._imageSize = this._options.size / 1.15; // frieren 角色稍大
+    } else {
+      this._imageSize = this._options.size / 1.25; // 默认大小
+    }
     this._canvasSize = this._options.size * 1.5;
 
     // widget root app
@@ -283,6 +290,20 @@ class WebpagePet {
     const img = document.createElement('div');
     img.className = 'sakana-widget-img';
     img.style.backgroundImage = `url('${this._image}')`;
+    // set initial bottom position based on character
+    if (this._char === 'aigirl') {
+      img.style.bottom = '40px'; // 增大 aigirl 的底部间距
+      img.style.transform = 'translateX(-70%)'; // aigirl 往左一点
+    } else if (this._char === 'frieren') {
+      img.style.bottom = '60px'; // frieren 底部间距 60px
+      img.style.transform = 'translateX(-50%)'; // 居中
+    } else if (this._char === 'liuying') {
+      img.style.bottom = '40px'; // liuying 底部间距 40px
+      img.style.transform = 'translateX(-50%)'; // 居中
+    } else {
+      img.style.bottom = '80px';
+      img.style.transform = 'translateX(-50%)'; // 保持其他角色居中
+    }
     this._domImage = img;
     main.appendChild(img);
 
@@ -384,18 +405,42 @@ class WebpagePet {
     // note that canvas is 1.5 times larger than widget
     ctx.translate(this._canvasSize / 2, size + (this._canvasSize - size) / 2);
     ctx.strokeStyle = stroke.color;
-    ctx.lineWidth = stroke.width;
+    // different stroke width for liuying
+    if (this._char === 'liuying') {
+      ctx.lineWidth = stroke.width * 0.8; // liuying 弹簧杆稍细
+    } else {
+      ctx.lineWidth = stroke.width;
+    }
     ctx.lineCap = 'round';
     if (this._options.rod) {
       ctx.beginPath();
     }
     // use the middle of control bar as start of the line
-    ctx.moveTo(0, -50); // 控制栏高度中间位置，增加高度
+    // different spring rod length for different characters
+    let startY = -50; // 控制栏高度中间位置
+    let curveY = -100; // 曲线高度
+    let radiusMultiplier = 2.5 / 3; // 角色高度比例
+    
+    if (this._char === 'aigirl') {
+      startY = -40; // 控制栏高度中间位置，aigirl 离控制台更近
+      curveY = -70; // 曲线高度，aigirl 弹簧杆更短
+      radiusMultiplier = 2 / 3; // 角色高度比例
+    } else if (this._char === 'frieren') {
+      startY = -45; // 控制栏高度中间位置，frieren 离控制台较近
+      curveY = -85; // 曲线高度，frieren 弹簧杆适中
+      radiusMultiplier = 2.2 / 3; // 角色高度比例
+    } else if (this._char === 'liuying') {
+      startY = -40; // 控制栏高度中间位置，liuying 离控制台更近
+      curveY = -90; // 曲线高度，liuying 弹簧杆更短且终点更上
+      radiusMultiplier = 1.8 / 3; // 角色高度比例，终点更上
+    }
+    
+    ctx.moveTo(0, startY);
     if (this._options.rod) {
-      const radius = imgSize * 2.5 / 3; // 增加角色高度比例
+      const radius = imgSize * radiusMultiplier;
       const { nx, ny } = this._calcCenterPoint(r, radius, x, y);
       // 使用二次贝塞尔曲线绘制弹簧杆，更接近 sakana-main 的效果
-      ctx.quadraticCurveTo(0, -100, nx, -ny); // 增加曲线高度
+      ctx.quadraticCurveTo(0, curveY, nx, -ny);
       ctx.stroke();
     }
     ctx.restore();
@@ -837,6 +882,30 @@ class WebpagePet {
     // refresh the widget image
     if (this._domImage) {
       this._domImage.style.backgroundImage = `url('${this._image}')`;
+      // set different bottom position for aigirl
+      if (name === 'aigirl') {
+        this._domImage.style.bottom = '40px'; // 增大 aigirl 的底部间距
+        this._domImage.style.transform = 'translateX(-70%)'; // aigirl 往左一点
+      } else if (name === 'frieren') {
+        this._domImage.style.bottom = '60px'; // frieren 底部间距 60px
+        this._domImage.style.transform = 'translateX(-50%)'; // 居中
+      } else if (name === 'liuying') {
+        this._domImage.style.bottom = '40px'; // liuying 底部间距 40px
+        this._domImage.style.transform = 'translateX(-50%)'; // 居中
+      } else {
+        this._domImage.style.bottom = '80px';
+        this._domImage.style.transform = 'translateX(-50%)'; // 保持其他角色居中
+      }
+      // update image size for different characters
+      if (name === 'liuying') {
+        this._imageSize = this._options.size / 0.9; // liuying 角色更大
+      } else if (name === 'frieren') {
+        this._imageSize = this._options.size / 1.15; // frieren 角色稍大
+      } else {
+        this._imageSize = this._options.size / 1.25; // 默认大小
+      }
+      this._domImage.style.width = `${this._imageSize}px`;
+      this._domImage.style.height = `${this._imageSize}px`;
     }
     return this;
   };
