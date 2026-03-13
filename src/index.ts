@@ -292,6 +292,11 @@ class WebpagePet {
     if (this._options.controls) {
       main.appendChild(ctrl);
     }
+    // add drag functionality to control bar
+    if (this._options.controls) {
+      ctrl.addEventListener('mousedown', this._onCtrlMouseDown);
+      ctrl.addEventListener('touchstart', this._onCtrlTouchStart);
+    }
     const itemClass = 'sakana-widget-ctrl-item';
     const person = document.createElement('div');
     person.className = itemClass;
@@ -572,6 +577,96 @@ class WebpagePet {
 
   /**
    * @private
+   * handle control bar mouse down event for dragging
+   */
+  private _onCtrlMouseDown = (e: MouseEvent) => {
+    // 防止事件冒泡到其他元素
+    e.stopPropagation();
+    
+    const { pageX, pageY } = e;
+    const _downPageX = pageX;
+    const _downPageY = pageY;
+    
+    const rect = this._domWrapper.getBoundingClientRect();
+    const startX = rect.left;
+    const startY = rect.top;
+
+    const onMouseMove = (e: MouseEvent) => {
+      const { pageX, pageY } = e;
+      const deltaX = pageX - _downPageX;
+      const deltaY = pageY - _downPageY;
+      
+      const newX = startX + deltaX;
+      const newY = startY + deltaY;
+      
+      this._domWrapper.style.position = 'fixed';
+      this._domWrapper.style.left = `${newX}px`;
+      this._domWrapper.style.top = `${newY}px`;
+      this._domWrapper.style.right = 'auto';
+      this._domWrapper.style.bottom = 'auto';
+      this._domWrapper.style.zIndex = '9999';
+    };
+
+    const onMouseUp = () => {
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+    };
+
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+  };
+
+  /**
+   * @private
+   * handle control bar touch start event for dragging
+   */
+  private _onCtrlTouchStart = (e: TouchEvent) => {
+    // 防止事件冒泡到其他元素
+    e.stopPropagation();
+    
+    if (!e.touches[0]) {
+      return;
+    }
+    
+    const { pageX, pageY } = e.touches[0];
+    const _downPageX = pageX;
+    const _downPageY = pageY;
+    
+    const rect = this._domWrapper.getBoundingClientRect();
+    const startX = rect.left;
+    const startY = rect.top;
+
+    const onTouchMove = (e: TouchEvent) => {
+      if (!e.touches[0]) {
+        return;
+      }
+      
+      const { pageX, pageY } = e.touches[0];
+      const deltaX = pageX - _downPageX;
+      const deltaY = pageY - _downPageY;
+      
+      const newX = startX + deltaX;
+      const newY = startY + deltaY;
+      
+      this._domWrapper.style.position = 'fixed';
+      this._domWrapper.style.left = `${newX}px`;
+      this._domWrapper.style.top = `${newY}px`;
+      this._domWrapper.style.right = 'auto';
+      this._domWrapper.style.bottom = 'auto';
+      this._domWrapper.style.zIndex = '9999';
+    };
+
+    const onTouchEnd = () => {
+      document.removeEventListener('touchmove', onTouchMove);
+      document.removeEventListener('touchend', onTouchEnd);
+    };
+
+    document.addEventListener('touchmove', onTouchMove);
+    document.addEventListener('touchend', onTouchEnd);
+  };
+
+  /**
+   * @private
    * request gyroscope permission
    */
   private _requestGyroPermission = async () => {
@@ -836,6 +931,12 @@ class WebpagePet {
     this._domCtrlMagic.removeEventListener('click', this.triggerAutoMode);
     this._domCtrlMuted.removeEventListener('click', this.toggleMute);
     this._domCtrlClose.removeEventListener('click', this.unmount);
+    // remove control bar drag event listeners
+    if (this._options.controls && this._domCtrlPerson.parentNode) {
+      const ctrl = this._domCtrlPerson.parentNode as HTMLElement;
+      ctrl.removeEventListener('mousedown', this._onCtrlMouseDown as unknown as EventListener);
+      ctrl.removeEventListener('touchstart', this._onCtrlTouchStart as unknown as EventListener);
+    }
 
     // disable gyroscope
     this.disableGyro();
